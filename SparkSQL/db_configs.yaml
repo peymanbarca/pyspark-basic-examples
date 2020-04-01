@@ -1,0 +1,5 @@
+test:
+  host: 79.175.151.121
+  password: k1l1d.c0m
+  user: postgres
+  dbname: kilid
