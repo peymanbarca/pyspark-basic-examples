@@ -15,6 +15,9 @@ if __name__ == "__main__":
     spark = SparkSessionCreator.SparkSessionCreator(NUM_CORE,conf)
 
 
+    print('\n\n----------------------------------------------------------------------')
+    print(' --------------------------- Start Of Application --------------------')
+
     t1=time.time()
 
     query = 'select organization_id,click_ts,impression_ts  from organization_listing_report_ts limit 30'
