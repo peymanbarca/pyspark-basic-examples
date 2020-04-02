@@ -25,7 +25,6 @@ if __name__ == "__main__":
     print('\n\n----------------------------------------------------------------------')
     print(' --------------------------- Start Of Application --------------------')
 
-    t1=time.time()
 
 
     my_dir = os.path.expanduser('/home/zevik/PycharmProjects/pyspark-basic-examples/SparkSQL/db_configs.yaml')
@@ -86,8 +85,8 @@ if __name__ == "__main__":
     sample_size = 2000
     fetch_related_query = 'select id,city_id,region_id,neighbourhood_id,area_id,(EXTRACT(EPOCH FROM listing_date) * 1000)::bigint as listing_date,floor_area,listing_type_id,price,' \
                           'longitude::numeric,latitude::numeric ' \
-                         'from listing where id!={} and city_id={} and region_id={} and listing_type_id={} order by listing_date desc limit 1000'\
-                            .format(target_listing_id,target_city_id,target_region_id,target_listing_type_id)
+                         'from listing where id!={} and city_id={} and region_id={} and listing_type_id={} order by listing_date desc limit {}'\
+                            .format(target_listing_id,target_city_id,target_region_id,target_listing_type_id,sample_size)
 
     db_cursor.execute(fetch_related_query)
     fetch_related_data = db_cursor.fetchall()
@@ -101,7 +100,8 @@ if __name__ == "__main__":
 
 
     # ------------------ Content Based Filtering Recommendation System ----------------------------
-    sorted_distances = []
+    t1=time.time()
+
 
     def contentBasedRecommenderScore(related_df_elem,target_vector):
 
@@ -158,7 +158,7 @@ if __name__ == "__main__":
         text_file.write("")
 
     # --------- compute Score of Similarity for Content based Recommendation System -------
-    total_df.foreach(lambda x: contentBasedRecommenderScore(x,target_vector))
+    total_df.foreach(lambda x: contentBasedRecommenderScore(x,target_vector))  # going from driver to worker nodes , # Remember that SparkContext can only be used on the driver, not in code that it run on workers
 
     # -------- Examine Score Results and Sorting -------
     with open("Output.txt") as f:

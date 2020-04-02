@@ -59,6 +59,8 @@ if __name__ == "__main__":
         if demo:
             time.sleep(2)
 
+
+    # going from driver to worker nodes
     df_p.foreach(lambda x: processRowOfDF(x,demo=True)) # Set demo to True to debug the magic of parallel processing, set false to parallel compute regularly
 
     t2 = time.time()
